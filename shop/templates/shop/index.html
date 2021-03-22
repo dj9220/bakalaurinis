@@ -5,18 +5,23 @@
     <title>Title</title>
 </head>
 <body>
-    {% block body %}
-        <h1>Kategorijos</h1>
-        {% for category in category_list %}
-            <div class="row">
-                <div class="col-md-3 offset-md-2">
+{% block body %}
+    <h1>Kategorijos</h1>
+    {% for category in object_list %}
+        <div class="row">
+            <div class="col-md-3 offset-md-2">
+                {{ category.name }}
+                {% for subcategory in category.subcategories.all %}
                     <a href="{% url 'shop:category_subcategory' category.id %}">
-                        <img width="500px" src="{{ category.image.url }}">
+                        {% if subcategory.image %}
+                            <img width="500px" src="{{ subcategory.image.url }}">
+                        {% endif %}
                     </a>
+                {% endfor %}
 
-                </div>
             </div>
-        {% endfor %}
-    {% endblock %}
+        </div>
+    {% endfor %}
+{% endblock %}
 </body>
 </html>
