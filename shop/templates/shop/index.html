@@ -1,0 +1,22 @@
+{% extends 'shop/base.html' %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {% block body %}
+        <h1>Kategorijos</h1>
+        {% for category in category_list %}
+            <div class="row">
+                <div class="col-md-3 offset-md-2">
+                    <a href="{% url 'shop:category_subcategory' category.id %}">
+                        <img width="500px" src="{{ category.image.url }}">
+                    </a>
+
+                </div>
+            </div>
+        {% endfor %}
+    {% endblock %}
+</body>
+</html>
