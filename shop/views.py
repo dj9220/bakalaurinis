@@ -1,8 +1,10 @@
-from django.shortcuts import render
-from django.views.generic import ListView
+from django.shortcuts import render, get_object_or_404, redirect
+from django.views.generic import ListView, CreateView
 from django.http import HttpResponse
 from . import models as models
 from django.template import loader
+from . import forms as form
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 class IndexClassView(ListView):
@@ -16,30 +18,53 @@ class ProductsClassView(ListView):
     context_object_name = 'product_list'
 
 
-class SubcategoriesClassView(ListView):
-    model = models.SubCategories
-    template_name = 'shop/Subcategories.html'
+class SupplierClassView(ListView):
+    model = models.Supplier
+    template_name = 'shop/Supplier.html'
+    context_object_name = 'supplier_list'
 
-    def get(self, request, *args, **kwargs):
-        kwargs['subs'] = models.SubCategories.objects.filter(category__name=models.Category.name)
 
-    def get_context_data(self, **kwargs):
-        context = super(SubcategoriesClassView,self).get_context_data(**kwargs)
-        category = models.SubCategories.category
-        subcategory = models.SubCategories.objects.filter(categories=category)
-        context['subcategories'] = subcategory
-        print(context['subcategories'])
-        return context
 def subcategoriesList(request,id):
-    category = models.SubCategories.objects.get(category_id=id)
-    context = {'category':category}
+    category = models.SubCategories.objects.filter(category_id=id)
+    context= {'category':category}
     return render(request,'shop/Subcategories.html',context)
+@login_required(login_url='users:login')
+def editProduct(request,id):
+    product = models.Product.objects.get(id=id)
+    productForm = form.ProductForm(request.POST or None, instance=product)
+    if productForm.is_valid():
+        productForm.save()
+        return redirect('shop:all_products')
+    return render(request,'shop/Product form.html',{'form':productForm, 'product':product})
 
+class CreateProduct(CreateView):
+    model = models.Product
+    fields = ['name', 'quantity', 'matt', 'subCategory', 'supplier', 'image', 'price']
+    template_name = 'shop/Product form.html'
+    def form_valid(self, form):
+        return super().form_valid(form)
+@login_required(login_url='users:login')
+def delete_product(request,id):
+    product = models.Product.objects.get(id=id)
+    if request.method=='POST':
+        product.delete()
+        return redirect('shop:all_products')
+    return render(request,'shop/delete-product.html', {'product':product})
 
+def search_product(request):
+    if request.method == 'POST':
+        query_name = request.POST.get('name', None)
+        if query_name:
+            results = models.Product.objects.filter(name__icontains=query_name)
+            return render(request, 'shop/product-search.html', {'results':results})
+        return render(request,'shop/product-search.html')
 
-
-
-
-
-
-
+@login_required(login_url='users:login')
+def create_supplier(request):
+    forms = form.SupplierForm()
+    if request.method == 'POST':
+        forms = form.SupplierForm(request.POST)
+        if forms.is_valid():
+            forms.save()
+            return redirect('shop:suppliers')
+    return render(request,'shop/SupplierForm.html',{'form':forms})

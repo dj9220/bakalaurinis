@@ -10,8 +10,15 @@
 
 <body>
     {% block body %}
-        {% for subcategory in subcategoriesList %}
-            <h2>labas</h2>
+        {% for sub in  category.all %}
+            <div class="row">
+                <div class="col-md-3 offset-md-2">
+                    <a href="##">
+                        <img width="500px" src="{{ sub.image.url }}">
+                    </a>
+
+                </div>
+            </div>
         {% endfor %}
     {% endblock %}
 </body>

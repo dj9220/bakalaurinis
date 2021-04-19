@@ -1,10 +1,13 @@
-<!DOCTYPE html>
+{% extends 'shop/base.html' %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
+    {% block body %}
+        <h1>{{ user.username }}
+    {% endblock %}
 
 </body>
 </html>

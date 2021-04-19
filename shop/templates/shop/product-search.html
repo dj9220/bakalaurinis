@@ -1,12 +1,13 @@
 {% extends 'shop/base.html' %}
-<html lang="en" xmlns="http://www.w3.org/1999/html">
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-        {% block body %}
-          <div class="table-responsive-sm">
+    {% block body %}
+         <div class="table-responsive-sm">
           <caption>List of products</caption>
             <table class="table">
               <thead>
@@ -22,8 +23,8 @@
                     <th scope="col">Trinti</th>
                 </tr>
               </thead>
-            {% for prod in product_list %}
-                <tbody>
+        {% for prod in results %}
+            <tbody>
                     <tr>
                       <th scope="row">{{ prod.id }}</th>
                       <td>{{ prod.name }}</td>
@@ -36,11 +37,7 @@
                         <td><a href="{% url 'shop:delete_product' prod.id %}"><button type="button" class="btn btn-primary" >Trinti</button> </a></td>
                     </tr>
                 </tbody>
-            {% endfor %}
-            </table>
-          </div>
-        {% endblock %}
+        {% endfor %}
+    {% endblock %}
 </body>
 </html>
-
-

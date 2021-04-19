@@ -1,0 +1,18 @@
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+
+from shop import models as shop_model
+
+@login_required(login_url='login')
+def dashboard(request):
+    total_product = shop_model.Product.objects.count()
+    total_suppliers = shop_model.Supplier.objects.count()
+    total_categories = shop_model.Category.objects.count()
+    total_subCategories = shop_model.SubCategories.objects.count()
+    context = {
+        'product':total_product,
+        'supplier':total_suppliers,
+        'categories':total_categories,
+        'subcategories':total_subCategories
+            }
+    return render(request, 'users/dashboard.html', context)

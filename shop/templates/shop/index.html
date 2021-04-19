@@ -8,15 +8,22 @@
     {% block body %}
         <h1>Kategorijos</h1>
         {% for category in category_list %}
-            <div class="row">
-                <div class="col-md-3 offset-md-2">
-                    <a href="{% url 'shop:category_subcategory' category.id %}">
-                        <img width="500px" src="{{ category.image.url }}">
-                    </a>
 
-                </div>
-            </div>
+<div class="row">
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">{{ category.name }}</h5>
+        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        <a href="{% url 'shop:category_subcategory' category.id %}" class="btn btn-primary">Subkategorijos</a>
+      </div>
+    </div>
+  </div>
+
+</div>
         {% endfor %}
     {% endblock %}
 </body>
 </html>
+
+

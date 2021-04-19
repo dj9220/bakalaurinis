@@ -8,24 +8,61 @@
     <title>Document</title>
 </head>
 <body>
-      <nav class="navbar navbar-dark bg-dark">
-        <a href="#" class="navbar-brand" > Žvejybos reikmenų parduotuvės IS</a>
-        <div class="navbar">
-            <a class="nav-item nav-link" href="#" >Prekių katalogas</a>
-            <a class="nav-item nav-link" href="#" >Tiekėjai</a>
-            <a class="nav-item nav-link" href="#" >Užrašai</a>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Zvejybos reikmenu IS</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'dashboard' %}">Pagrindinis</a>
+        </li>
+         <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Produktai
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="{% url 'shop:all_products' %}">Visi produktai</a></li>
+            <li><a class="dropdown-item" href="{% url 'shop:add_product' %}">Pridėti produktą</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Tiekėjai
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="{% url 'shop:suppliers' %}">Tiekėjų sąrašas</a></li>
+            <li><a class="dropdown-item" href="#">Saskaitos</a></li>
+              <li><a class="dropdown-item" href="{% url 'shop:create_supplier' %}">Pridėti tiekėją</a></li>
+          </ul>
+        </li>
+          <li class="nav-item">
+              {% if user.is_authenticated %}
+                  <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Profilis
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="{% url 'profile' %}">Mano duomenys</a></li>
+            <li><a class="dropdown-item" href="{% url 'logout' %}">Atsijungti</a></li>
+          </ul>
+        </li>
+              {% endif %}
 
-        </div>
-    </nav>
-      {% if messages %}
-        {% for message in messages %}
-        <div class="alert alert-{{ message.tag }}">
-            {{ message }}
-        </div>
+        </li>
+      </ul>
+      <form action="{% url 'shop:search_product' %}" class="d-flex" method="post">
+          {% csrf_token %}
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="name">
+        <button class="btn btn-outline-success" type="submit">Ieškoti</button>
+      </form>
+    </div>
+  </div>
+</nav>
 
-        {% endfor %}
-      {% endif %}
-    {% block body %}
+      {% block body %}
     {% endblock %}
 </body>
 </html>
