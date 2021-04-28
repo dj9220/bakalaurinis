@@ -6,8 +6,10 @@
 </head>
 <body>
     {% block body %}
-        <h1>{{ user.profile.name }}</h1>
+        {% for m in msg %}
+            <h2>{{ m.sender }}</h2>
+            <h2>{{ m.message_content }}</h2>
+        {% endfor %}
     {% endblock %}
-
 </body>
 </html>

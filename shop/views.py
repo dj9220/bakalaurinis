@@ -5,6 +5,7 @@ from . import models as models
 from django.template import loader
 from . import forms as form
 from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail
 # Create your views here.
 
 class IndexClassView(ListView):
@@ -37,12 +38,16 @@ def editProduct(request,id):
         return redirect('shop:all_products')
     return render(request,'shop/Product form.html',{'form':productForm, 'product':product})
 
-class CreateProduct(CreateView):
-    model = models.Product
-    fields = ['name', 'quantity', 'matt', 'subCategory', 'supplier', 'image', 'price']
-    template_name = 'shop/Product form.html'
-    def form_valid(self, form):
-        return super().form_valid(form)
+@login_required
+def create_product(request):
+    forms = form.ProductForm()
+    if request.method=='POST':
+        forms = form.ProductForm(request.POST)
+        if forms.is_valid():
+            forms.save()
+            return redirect('shop:all_products')
+    return render(request, 'shop/Product form.html', {'form': forms})
+
 @login_required(login_url='users:login')
 def delete_product(request,id):
     product = models.Product.objects.get(id=id)
@@ -68,3 +73,16 @@ def create_supplier(request):
             forms.save()
             return redirect('shop:suppliers')
     return render(request,'shop/SupplierForm.html',{'form':forms})
+@login_required
+def SendMail(request, id):
+    supp = models.Supplier.objects.get(id=id)
+    if request.method=='GET':
+        forms=form.SendEmailForm()
+    else:
+        forms =form.SendEmailForm(request.POST)
+        if forms.is_valid():
+            fromemail = supp.email
+            subject = forms.cleaned_data['subject']
+            message = forms.cleaned_data['message']
+            send_mail(subject,message,fromemail,[supp.email,fromemail])
+    return render(request,'shop/Email-page.html', {'form':forms})

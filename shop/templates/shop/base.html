@@ -52,6 +52,15 @@
               {% endif %}
 
         </li>
+      <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Žinutės
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="{% url 'send_message' %}">Rašyti žinutę</a></li>
+            <li><a class="dropdown-item" href="{% url 'inbox' %}">Gautieji</a></li>
+          </ul>
+        </li>
       </ul>
       <form action="{% url 'shop:search_product' %}" class="d-flex" method="post">
           {% csrf_token %}

@@ -6,8 +6,9 @@
 </head>
 <body>
     {% block body %}
-        <h1>{{ user.profile.name }}</h1>
+        {% for order in orders_list %}
+            <h2>{{ order.created_at }}</h2>
+        {% endfor %}
     {% endblock %}
-
 </body>
 </html>

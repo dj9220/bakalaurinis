@@ -14,6 +14,7 @@
     <p class="card-text">Telefono numeris: {{ supp.phone_number }}</p>
       <p class="card-text">Elektroninis paštas: {{ supp.email }}</p>
           <p class="card-text">Adresas: {{ supp.adress }}</p>
+      <a href="{% url 'shop:sendmail' supp.id %}" class="btn btn-primary">Susisiekti</a>
   </div>
 </div>
         {% endfor %}
