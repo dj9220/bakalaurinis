@@ -1,0 +1,52 @@
+{% extends 'shop/base.html' %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+        {% block body %}
+
+                <div class="container">
+  <div class="row">
+    <div class="col-sm">
+      <img width="200px" src="{{ product.image.url }}">
+    </div>
+    <div class="col-sm">
+        {{ product.name }}
+    </div>
+     <div class="col-sm">
+      {{ product.price }}
+    </div>
+      <div class="col-sm">
+      {{ product.quantity }}
+    </div>
+      <div class="col-sm">
+      {{ product.matt.name }}
+          </div>
+
+  </div>
+                </div>
+      <div class="col-sm">
+      {{ product.subCategory.name }}
+    </div>
+            </div>
+      <div class="col-sm">
+      {{ product.supplier.name }}
+    </div>
+            </div>
+      <div class="col-sm">
+      {{ product.image }}
+    </div>
+            </div>
+             <div class="col-sm">
+      {{ product.supplier.name }}
+    </div>
+      <div class="col-sm">
+      {{ product.price }}
+    </div>
+</div>
+
+        {% endblock %}
+</body>
+</html>

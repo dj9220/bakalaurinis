@@ -1,0 +1,27 @@
+{% extends 'shop/base.html' %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {% block body %}
+    {% for prod in product %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <img height="300px" src="{{ prod.image.url }}" class="card"/>
+        </div>
+        <div class="col-md-6">
+            <h1> {{ prod.name }}</h1>
+            <h2> {{ prod.quantity }}</h2>
+            <h3>{{ prod.price }}</h3>
+
+        </div>
+    </div>
+</div>
+
+{% endfor %}
+{% endblock %}
+</body>
+</html>

@@ -1,0 +1,23 @@
+{% extends 'shop/base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {% block body %}
+        {% for supp in supplier_list %}
+            <div class="card" style="width: 18rem;">
+  <div class="card-body">
+    <h5 class="card-title">{{ supp.name }}</h5>
+    <p class="card-text">Telefono numeris: {{ supp.phone_number }}</p>
+      <p class="card-text">Elektroninis paštas: {{ supp.email }}</p>
+          <p class="card-text">Adresas: {{ supp.adress }}</p>
+      <a href="{% url 'shop:sendmail' supp.id %}" class="btn btn-primary">Susisiekti</a>
+  </div>
+</div>
+        {% endfor %}
+    {% endblock %}
+</body>
+</html>

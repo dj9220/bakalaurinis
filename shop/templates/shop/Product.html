@@ -1,10 +1,41 @@
-<!DOCTYPE html>
+{% extends 'shop/base.html' %}
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
 <body>
+{% block body %}
+<div class="table-responsive-sm">
+    {% if user.is_authenticated %}
+          <caption>Produktų sąrašas</caption>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Pavadinimas</th>
+                  <th scope="col">Kiekis sandėlyje</th>
+                   <th scope="col">Kaina eur</th>
+                    <th scope="col">Subkategorija</th>
+                    <th scope="col">Tiekėjas</th>
+                    <th scope="col">Redaguoti</th>
+                    <th scope="col">Trinti</th>
+                </tr>
+              </thead>
 
+    {% for prod in product_list %}
+                 <tbody>
+                    <tr>
+                      <th scope="row">{{ prod.id }}</th>
+                      <td>{{ prod.name }}</td>
+                      <td>{{ prod.quantity }}</td>
+                        <td>{{ prod.price }}</td>
+                        <td>{{ prod.subCategory.name }}</td>
+                        <td>{{ prod.supplier.name }}</td>
+                        <td><a href="{% url 'shop:edit_product' prod.id %}"><button type="button" class="btn btn-primary" >Redaguoti</button> </a></td>
+                        <td><a href="{% url 'shop:delete_product' prod.id %}"><button type="button" class="btn btn-primary" >Trinti</button> </a></td>
+                    </tr>
+                </tbody>
+            {% endfor %}
+            </table>
+          </div>
+    {% endif %}
+{% endblock %}
 </body>
 </html>

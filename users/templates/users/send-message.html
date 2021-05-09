@@ -1,0 +1,20 @@
+{% extends 'shop/base.html' %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Siusti laiska</title>
+</head>
+<body>
+    {% block body %}
+         <form method="post">
+         {% csrf_token %}
+             <div class="mb-3">
+    <label for="exampleInputEmail1" class="form-label">Tekstas:</label>
+                {{ form.message_content }}
+  </div>
+
+        <button type="submit" class="btn btn-primary">Skelbti</button>
+        </form>
+    {% endblock %}
+</body>
+</html>
