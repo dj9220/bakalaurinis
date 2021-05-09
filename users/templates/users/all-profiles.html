@@ -1,0 +1,20 @@
+{% extends 'shop/base.html' %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% block body %}
+        {% for profile in profiles %}
+            <div class="card" style="width: 18rem;">
+  <div class="card-body">
+    <h5 class="card-title">{{ profile.name }} {{ profile.surname }}</h5>
+      <h4 class="card-title">Telefono numeris: {{ profile.phone_number }}</h4>
+  </div>
+</div>
+        {% endfor %}
+    {% endblock %}
+
+</body>
+</html>

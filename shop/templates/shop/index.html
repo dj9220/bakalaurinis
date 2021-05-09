@@ -6,22 +6,18 @@
 </head>
 <body>
     {% block body %}
-        <h1>Kategorijos</h1>
+        <h1 class="text-center">Prekių katalogas</h1>
+        <div class="card-group">
         {% for category in category_list %}
+<div class="card " style="width: 18rem;">
+<a href="{% url 'shop:category_subcategory' category.id %}"><img class="card-img-top" src="{{ category.image.url }}" alt="Card image cap"></a>
 
-<div class="row">
-  <div class="col-sm-6">
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">{{ category.name }}</h5>
-        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        <a href="{% url 'shop:category_subcategory' category.id %}" class="btn btn-primary">Subkategorijos</a>
-      </div>
-    </div>
+  <div class="card-body">
+    <h5 class="card-title">{{ category.name }} </h5>
   </div>
-
 </div>
         {% endfor %}
+        </div>
     {% endblock %}
 </body>
 </html>

@@ -1,5 +1,6 @@
+{% extends 'shop/base.html' %}
 <form method="post">
     {% csrf_token %}
-    <h2> Are you sure you want to delete {{ product.name }}</h2>
+    <h2> Ar tikrai norite ištinti produktą pavadinimu {{ product.name }}?</h2>
     <button type="submit">Confirm</button>
 </form>

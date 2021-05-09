@@ -2,10 +2,14 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, CreateView
 from django.http import HttpResponse
 from . import models as models
+from django.http import JsonResponse
 from django.template import loader
 from . import forms as form
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
+from .serializers import ProductSerializer
+import json
+from django.contrib import messages
 # Create your views here.
 
 class IndexClassView(ListView):
@@ -29,12 +33,16 @@ def subcategoriesList(request,id):
     category = models.SubCategories.objects.filter(category_id=id)
     context= {'category':category}
     return render(request,'shop/Subcategories.html',context)
+def products_by_subcategory(request, id):
+    product = models.Product.objects.filter(subCategory_id=id)
+    return render(request, 'shop/productSubcategory.html',{'products':product})
 @login_required(login_url='users:login')
 def editProduct(request,id):
     product = models.Product.objects.get(id=id)
     productForm = form.ProductForm(request.POST or None, instance=product)
     if productForm.is_valid():
         productForm.save()
+        messages.add_message(request,f'Produktas {product.name} sėkmingai pakeistas')
         return redirect('shop:all_products')
     return render(request,'shop/Product form.html',{'form':productForm, 'product':product})
 
@@ -45,6 +53,8 @@ def create_product(request):
         forms = form.ProductForm(request.POST)
         if forms.is_valid():
             forms.save()
+            name = forms.cleaned_data.get('name')
+            messages.success(request,f'Produktas {name} pridėtas')
             return redirect('shop:all_products')
     return render(request, 'shop/Product form.html', {'form': forms})
 
@@ -86,3 +96,21 @@ def SendMail(request, id):
             message = forms.cleaned_data['message']
             send_mail(subject,message,fromemail,[supp.email,fromemail])
     return render(request,'shop/Email-page.html', {'form':forms})
+
+@login_required
+def edit_productQuantity(request, id):
+    requestData = json.loads(request.body)
+    product = models.Product.objects.get(id=id)
+    productSerializer = ProductSerializer(data=product, instance=requestData)
+    print(requestData)
+
+    if productSerializer.is_valid():
+        result = productSerializer.save()
+        return JsonResponse(result.data)
+    return JsonResponse({'error':'failed'}, status=400)
+@login_required
+def product_in_catalog(request, id):
+    product = models.Product.objects.get(id=id)
+    return render(request, 'shop/product_in_catalog.html.html', {'product':product})
+
+

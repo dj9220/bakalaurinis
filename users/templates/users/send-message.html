@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{% extends 'shop/base.html' %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -8,9 +8,12 @@
     {% block body %}
          <form method="post">
          {% csrf_token %}
-        {{ form }}
+             <div class="mb-3">
+    <label for="exampleInputEmail1" class="form-label">Tekstas:</label>
+                {{ form.message_content }}
+  </div>
 
-        <input type="submit" value="send"/>
+        <button type="submit" class="btn btn-primary">Skelbti</button>
         </form>
     {% endblock %}
 </body>

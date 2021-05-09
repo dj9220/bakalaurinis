@@ -10,16 +10,18 @@
 
 <body>
     {% block body %}
+                <h1 class="text-center">Prekių katalogas</h1>
+        <div class="card-group">
         {% for sub in  category.all %}
-            <div class="row">
-                <div class="col-md-3 offset-md-2">
-                    <a href="##">
-                        <img width="500px" src="{{ sub.image.url }}">
-                    </a>
+            <div class="card " style="width: 18rem;">
+<a href="{% url 'shop:subcategoryProducts' sub.id %}"><img class="card-img-top" src="{{ sub.image.url }}" alt="Card image cap"></a>
 
-                </div>
-            </div>
+  <div class="card-body">
+    <h5 class="card-title">{{ sub.name }} </h5>
+  </div>
+</div>
         {% endfor %}
+        </div>
     {% endblock %}
 </body>
 </html>

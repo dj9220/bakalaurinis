@@ -3,12 +3,13 @@ from datetime import date
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
 from django.views import View
 
 from .models import Profile, Message
 
 # Create your views here.
-from users.forms import RegisterForm, LoginForm, MessageForm
+from users.forms import RegisterForm, LoginForm, MessageForm, ProfileForm
 from django.contrib import messages
 
 def login_page(request):
@@ -19,6 +20,7 @@ def login_page(request):
                 username = forms.cleaned_data['username']
                 password = forms.cleaned_data['password']
                 user = authenticate(username=username, password=password)
+                messages.success(request,f'Sveiki atvykę')
                 if user:
                     login(request, user)
                     return redirect('dashboard')
@@ -35,26 +37,25 @@ def profile_page(request):
 
 @login_required
 def write_message(request):
-    user = Message.objects.filter(sender=request.user)
     if request.method=='POST':
         form = MessageForm(request.POST)
         if form.is_valid():
+            form = form.save(commit=False)
+            form.sender = request.user
             form.save()
-            return redirect('dashboard')
+            return redirect('inbox')
     else:
         form = MessageForm()
 
-    return render(request,'users/send-message.html', {'form':form, 'sender':user})
+    return render(request,'users/send-message.html', {'form':form})
 @login_required
 def get_inbox(request):
-    msg = Message.objects.all()
+    msg = Message.objects.all().order_by('-created_at')
     return render(request, 'users/inbox.html', {'msg':msg})
-def succes(request):
-    return render(request,'users/succes.html',{})
 
-class SendMessageView(View):
-    def post(self, request, *args, **kwargs):
-        reciever_id = request.POST.get('reciever_id','')
-        message = request.POST.get('message','')
-        Message.objects.create(sender=request.user, reciever__id=reciever_id,message_content=message)
-        return render(request, 'users/send-message.html', {})
+@login_required
+def all_profiles(request):
+    profiles = Profile.objects.all()
+    return render(request, 'users/all-profiles.html', {'profiles':profiles})
+
+
